@@ -59,3 +59,12 @@ typings/
 
 # next.js build output
 .next
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# sistema
+.DS_Store
+Thumbs.db

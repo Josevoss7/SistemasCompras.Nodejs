@@ -1,0 +1,70 @@
+<%- include('partials/header', { titulo: 'Novo Produto' }) %>
+<%- include('partials/navbar') %>
+
+<main class="container">
+  <div class="page-header">
+    <h1>Novo Produto</h1>
+    <a href="/produtos" class="btn-secondary">Voltar</a>
+  </div>
+
+  <div class="form-wrapper">
+    <% if (erro) { %>
+      <div class="alert alert-error">
+        <%= erro %>
+      </div>
+    <% } %>
+
+    <form action="/produtos/novo" method="POST" class="form-grid">
+      <div class="form-group">
+        <label for="nome">Nome do produto</label>
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          value="<%= dados.nome || '' %>"
+          placeholder="Digite o nome do produto"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="categoria">Categoria</label>
+        <input
+          type="text"
+          id="categoria"
+          name="categoria"
+          value="<%= dados.categoria || '' %>"
+          placeholder="Ex: Informática"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="preco">Preço</label>
+        <input
+          type="number"
+          step="0.01"
+          id="preco"
+          name="preco"
+          value="<%= dados.preco || '' %>"
+          placeholder="0.00"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="estoque">Estoque</label>
+        <input
+          type="number"
+          id="estoque"
+          name="estoque"
+          value="<%= dados.estoque || '' %>"
+          placeholder="0"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Salvar Produto</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,33 @@
+<%- include('partials/header', { titulo: 'Início' }) %>
+<%- include('partials/navbar') %>
+
+<main class="container">
+  <section class="hero">
+    <h1>Painel do Sistema de Compras</h1>
+    <p>Gerencie produtos, fornecedores, requisições e ordens de compra de forma organizada.</p>
+  </section>
+
+  <section class="cards">
+    <a class="card" href="/produtos">
+      <h2>Produtos</h2>
+      <p>Consulte e gerencie o catálogo de produtos.</p>
+    </a>
+
+    <a class="card" href="/fornecedores">
+      <h2>Fornecedores</h2>
+      <p>Visualize os fornecedores cadastrados.</p>
+    </a>
+
+    <a class="card" href="/requisicoes">
+      <h2>Requisições</h2>
+      <p>Acompanhe os pedidos internos.</p>
+    </a>
+
+    <a class="card" href="/ordens-compra">
+      <h2>Ordens de Compra</h2>
+      <p>Gerencie as compras realizadas.</p>
+    </a>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

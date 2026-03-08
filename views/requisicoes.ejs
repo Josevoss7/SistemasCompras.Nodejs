@@ -1,0 +1,34 @@
+<%- include('partials/header', { titulo: 'Requisições' }) %>
+<%- include('partials/navbar') %>
+
+<main class="container">
+  <div class="page-header">
+    <h1>Requisições</h1>
+    <button class="btn-primary">Nova Requisição</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Solicitante</th>
+          <th>Setor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% requisicoes.forEach(function(requisicao) { %>
+          <tr>
+            <td><%= requisicao.id %></td>
+            <td><%= requisicao.solicitante %></td>
+            <td><%= requisicao.setor %></td>
+            <td><span class="badge"><%= requisicao.status %></span></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

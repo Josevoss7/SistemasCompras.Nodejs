@@ -1,0 +1,36 @@
+<%- include('partials/header', { titulo: 'Ordens de Compra' }) %>
+<%- include('partials/navbar') %>
+
+<main class="container">
+  <div class="page-header">
+    <h1>Ordens de Compra</h1>
+    <button class="btn-primary">Nova Ordem</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fornecedor</th>
+          <th>Data</th>
+          <th>Valor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% ordens.forEach(function(ordem) { %>
+          <tr>
+            <td><%= ordem.id %></td>
+            <td><%= ordem.fornecedor %></td>
+            <td><%= ordem.data %></td>
+            <td>R$ <%= ordem.valor %></td>
+            <td><span class="badge"><%= ordem.status %></span></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

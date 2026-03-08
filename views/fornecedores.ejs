@@ -1,0 +1,36 @@
+<%- include('partials/header', { titulo: 'Fornecedores' }) %>
+<%- include('partials/navbar') %>
+
+<main class="container">
+  <div class="page-header">
+    <h1>Fornecedores</h1>
+    <button class="btn-primary">Novo Fornecedor</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>CNPJ</th>
+          <th>E-mail</th>
+          <th>Telefone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% fornecedores.forEach(function(fornecedor) { %>
+          <tr>
+            <td><%= fornecedor.id %></td>
+            <td><%= fornecedor.nome %></td>
+            <td><%= fornecedor.cnpj %></td>
+            <td><%= fornecedor.email %></td>
+            <td><%= fornecedor.telefone %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

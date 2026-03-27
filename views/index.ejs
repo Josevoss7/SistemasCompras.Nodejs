@@ -1,32 +1,161 @@
-<%- include('partials/header', { titulo: 'Início' }) %>
+<%- include('partials/header', { titulo: 'Dashboard' }) %>
 <%- include('partials/navbar') %>
 
 <main class="container">
-  <section class="hero">
-    <h1>Painel do Sistema de Compras</h1>
-    <p>Gerencie produtos, fornecedores, requisições e ordens de compra de forma organizada.</p>
+  <section class="dash-top">
+    <div>
+      <h1 class="dash-title">Dashboard de Compras</h1>
+      <p class="dash-subtitle">Acompanhe indicadores, ordens, requisições e desempenho dos fornecedores.</p>
+    </div>
   </section>
 
-  <section class="cards">
-    <a class="card" href="/produtos">
-      <h2>Produtos</h2>
-      <p>Consulte e gerencie o catálogo de produtos.</p>
-    </a>
+  <section class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-icon metric-blue">📦</div>
+      <div>
+        <div class="metric-label">Total de Produtos</div>
+        <div class="metric-value"><%= dashboard.totalProdutos %></div>
+      </div>
+    </div>
 
-    <a class="card" href="/fornecedores">
-      <h2>Fornecedores</h2>
-      <p>Visualize os fornecedores cadastrados.</p>
-    </a>
+    <div class="metric-card">
+      <div class="metric-icon metric-green">🏢</div>
+      <div>
+        <div class="metric-label">Fornecedores</div>
+        <div class="metric-value"><%= dashboard.totalFornecedores %></div>
+      </div>
+    </div>
 
-    <a class="card" href="/requisicoes">
-      <h2>Requisições</h2>
-      <p>Acompanhe os pedidos internos.</p>
-    </a>
+    <div class="metric-card">
+      <div class="metric-icon metric-orange">📄</div>
+      <div>
+        <div class="metric-label">Requisições Abertas</div>
+        <div class="metric-value"><%= dashboard.requisicoesAbertas %></div>
+      </div>
+    </div>
 
-    <a class="card" href="/ordens-compra">
-      <h2>Ordens de Compra</h2>
-      <p>Gerencie as compras realizadas.</p>
-    </a>
+    <div class="metric-card">
+      <div class="metric-icon metric-red">🛒</div>
+      <div>
+        <div class="metric-label">Ordens Pendentes</div>
+        <div class="metric-value"><%= dashboard.ordensPendentes %></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dashboard-main-grid">
+    <div class="panel destaque-financeiro">
+      <div class="panel-header">
+        <h2>Valor Total em Compras</h2>
+      </div>
+      <div class="money-value">
+        R$ <%= dashboard.valorTotalCompras.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+      </div>
+      <p class="panel-text">Valor consolidado de compras emitidas, recebidas e em andamento.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Compras por mês</h2>
+      </div>
+
+      <div class="mini-chart">
+  <% comprasPorMes.forEach(function(item) { %>
+    <div class="chart-col">
+      <div class="chart-bar-wrap">
+        <div class="chart-bar <%= item.classe %>"></div>
+      </div>
+      <span class="chart-label"><%= item.mes %></span>
+    </div>
+  <% }) %>
+</div>
+    </div>
+  </section>
+
+  <section class="dashboard-secondary-grid">
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Últimas Requisições</h2>
+      </div>
+
+      <div class="simple-list">
+        <% ultimasRequisicoes.forEach(function(req) { %>
+          <div class="simple-list-item">
+            <div>
+              <strong>#<%= req.id %></strong>
+              <span><%= req.solicitante %> • <%= req.setor %></span>
+            </div>
+            <div>
+              <% if (req.status === 'ABERTA') { %>
+                <span class="status-badge status-pendente"><%= req.status %></span>
+              <% } else if (req.status === 'APROVADA') { %>
+                <span class="status-badge status-liberada"><%= req.status %></span>
+              <% } else { %>
+                <span class="status-badge status-recebida"><%= req.status %></span>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Fornecedores mais usados</h2>
+      </div>
+
+      <div class="simple-list">
+        <% fornecedoresMaisUsados.forEach(function(f) { %>
+          <div class="simple-list-item fornecedor-item">
+            <div>
+              <strong><%= f.nome %></strong>
+              <span><%= f.pedidos %> pedidos</span>
+            </div>
+            <div class="fornecedor-badge"><%= f.pedidos %></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header painel-tabela-header">
+      <h2>Últimas Ordens de Compra</h2>
+      <a href="/ordens-compra" class="btn-primary">Ver todas</a>
+    </div>
+
+    <div class="table-wrapper dashboard-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Número</th>
+            <th>Fornecedor</th>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ultimasOrdens.forEach(function(ordem) { %>
+            <tr>
+              <td>#<%= ordem.id %></td>
+              <td><%= ordem.fornecedor %></td>
+              <td><%= ordem.data %></td>
+              <td>R$ <%= ordem.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+              <td>
+                <% if (ordem.status === 'PENDENTE') { %>
+                  <span class="status-badge status-pendente"><%= ordem.status %></span>
+                <% } else if (ordem.status === 'LIBERADA') { %>
+                  <span class="status-badge status-liberada"><%= ordem.status %></span>
+                <% } else { %>
+                  <span class="status-badge status-recebida"><%= ordem.status %></span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
   </section>
 </main>
 

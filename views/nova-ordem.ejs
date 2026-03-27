@@ -1,0 +1,151 @@
+<%- include('partials/header', { titulo: 'Salvar Ordem de Compra' }) %>
+<%- include('partials/navbar') %>
+
+<main class="container oc-page">
+  <div class="erp-card">
+    <div class="erp-header">
+      <h1>Salvar Ordem de Compra</h1>
+    </div>
+
+    <form action="/ordens-compra/nova" method="POST">
+      <div class="erp-grid">
+        <div class="erp-field">
+          <label for="origem">Origem:</label>
+          <select id="origem" name="origem">
+            <option value=""></option>
+            <option>Interna</option>
+            <option>Externa</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="dataEmissao">Data de emissão: <span>*</span></label>
+          <div class="erp-input-icon">
+            <input type="text" id="dataEmissao" name="dataEmissao" value="26/06/2025">
+            <span class="icon-box">📅</span>
+          </div>
+        </div>
+
+        <div class="erp-field">
+          <label for="dataEntrega">Data de entrega: <span>*</span></label>
+          <div class="erp-input-icon">
+            <input type="text" id="dataEntrega" name="dataEntrega" value="10/07/2025">
+            <span class="icon-box">📅</span>
+          </div>
+        </div>
+
+        <div class="erp-field">
+          <label for="pedidoFornecedor">Pedido do Fornecedor:</label>
+          <input type="text" id="pedidoFornecedor" name="pedidoFornecedor">
+        </div>
+
+        <div class="erp-field">
+          <label for="condPgto">Cond. Pgto:</label>
+          <select id="condPgto" name="condPgto">
+            <option>28/42/56/84 dias</option>
+            <option>À vista</option>
+            <option>30 dias</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="formaPagamento">Forma de pagamento:</label>
+          <select id="formaPagamento" name="formaPagamento">
+            <option>Selecione uma forma de pagan</option>
+            <option>Pix</option>
+            <option>Boleto</option>
+            <option>Transferência</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="status">Status:</label>
+          <select id="status" name="status">
+            <option>Liberado</option>
+            <option>Pendente</option>
+            <option>Cancelado</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="cgo">CGO:</label>
+          <select id="cgo" name="cgo">
+            <option>Selecione um CGO</option>
+            <option>CGO 001</option>
+            <option>CGO 002</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="destaqueSt">Destaque ST</label>
+          <select id="destaqueSt" name="destaqueSt">
+            <option>Sem ST</option>
+            <option>Com ST</option>
+          </select>
+        </div>
+
+        <div class="erp-field erp-col-span-3">
+          <label for="fornecedor">Fornecedor:</label>
+          <select id="fornecedor" name="fornecedor">
+            <option>Nada selecionado</option>
+            <option>Fornecedor Alpha</option>
+            <option>Fornecedor Beta</option>
+            <option>Fornecedor Gama</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="natureza">Natureza: <span>*</span></label>
+          <select id="natureza" name="natureza">
+            <option>Selecione uma Natureza do modelo:</option>
+            <option>Compra para estoque</option>
+            <option>Compra para uso interno</option>
+          </select>
+        </div>
+
+        <div class="erp-field">
+          <label for="centroCusto">Centro de custo: <span>*</span></label>
+          <div class="erp-select-action">
+            <select id="centroCusto" name="centroCusto">
+              <option>Selecione um centro de custo do modelo:</option>
+              <option>TI</option>
+              <option>Compras</option>
+              <option>Financeiro</option>
+            </select>
+            <button type="button" class="erp-action-btn">≡</button>
+          </div>
+        </div>
+
+        <div class="erp-field">
+          <label for="planoContas">Plano de Contas:</label>
+          <select id="planoContas" name="planoContas">
+            <option>Selecione um plano de contas do modelo:</option>
+            <option>Despesas Operacionais</option>
+            <option>Materiais</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="erp-divider"></div>
+
+      <div class="erp-totais">
+        <div class="erp-total-item">
+          <label>Quantidade Total:</label>
+          <div class="erp-total-valor">96</div>
+        </div>
+
+        <div class="erp-total-item">
+          <label>Valor Total:</label>
+          <div class="erp-total-valor">436,79</div>
+        </div>
+      </div>
+
+      <div class="erp-footer-buttons">
+        <button type="submit" class="erp-btn erp-btn-primary">Confirmar</button>
+        <a href="/ordens-compra" class="erp-btn erp-btn-light">Voltar</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

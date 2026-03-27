@@ -4,8 +4,14 @@
 <main class="container">
   <div class="page-header">
     <h1>Requisições</h1>
-    <button class="btn-primary">Nova Requisição</button>
+    <a href="/requisicoes/nova" class="btn-primary">Nova Requisição</a>
   </div>
+
+  <% if (mensagem) { %>
+    <div class="alert alert-success">
+      <%= mensagem %>
+    </div>
+  <% } %>
 
   <div class="table-wrapper">
     <table>
@@ -23,7 +29,7 @@
             <td><%= requisicao.id %></td>
             <td><%= requisicao.solicitante %></td>
             <td><%= requisicao.setor %></td>
-            <td><span class="badge"><%= requisicao.status %></span></td>
+            <td><span class="status-badge status-pendente"><%= requisicao.status %></span></td>
           </tr>
         <% }) %>
       </tbody>

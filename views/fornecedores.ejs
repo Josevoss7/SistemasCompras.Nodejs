@@ -4,28 +4,52 @@
 <main class="container">
   <div class="page-header">
     <h1>Fornecedores</h1>
-    <button class="btn-primary">Novo Fornecedor</button>
+    <a href="/fornecedores/novo" class="btn-primary">Novo Fornecedor</a>
   </div>
+
+  <% const msg = typeof mensagem !== 'undefined' ? mensagem : null; %>
+
+  <% if (msg) { %>
+    <div class="alert alert-success">
+      <%= msg %>
+    </div>
+  <% } %>
 
   <div class="table-wrapper">
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nome</th>
           <th>CNPJ</th>
-          <th>E-mail</th>
+          <th>Razão Social</th>
+          <th>Responsável</th>
           <th>Telefone</th>
+          <th>E-mail</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <% fornecedores.forEach(function(fornecedor) { %>
           <tr>
             <td><%= fornecedor.id %></td>
-            <td><%= fornecedor.nome %></td>
             <td><%= fornecedor.cnpj %></td>
-            <td><%= fornecedor.email %></td>
+            <td><%= fornecedor.razaoSocial %></td>
+            <td><%= fornecedor.responsavel %></td>
             <td><%= fornecedor.telefone %></td>
+            <td><%= fornecedor.email %></td>
+            <td>
+              <div class="acoes-tabela">
+                <a href="/fornecedores/editar/<%= fornecedor.id %>" class="btn-editar">
+                  ✏️ Editar
+                </a>
+
+                <form action="/fornecedores/excluir/<%= fornecedor.id %>" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este fornecedor?');">
+                  <button type="submit" class="btn-excluir">
+                    🗑 Excluir
+                  </button>
+                </form>
+              </div>
+            </td>
           </tr>
         <% }) %>
       </tbody>

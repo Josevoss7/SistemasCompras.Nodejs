@@ -7,3 +7,16 @@ exports.listar = (req, res) => {
 
   res.render('ordens', { ordens });
 };
+
+exports.formNova = (req, res) => {
+  res.render('nova-ordem', {
+    titulo: 'Salvar Ordem de Compra',
+    dados: {}
+  });
+};
+
+exports.criar = (req, res) => {
+  console.log('Dados recebidos da ordem de compra:', req.body);
+
+  res.redirect('/ordens-compra');
+};

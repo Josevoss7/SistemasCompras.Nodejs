@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "cnpj": "12.345.678/0001-90",
+    "razaoSocial": "Fornecedor Alpha LTDA",
+    "nomeFantasia": "Fornecedor Alpha",
+    "responsavel": "Carlos Souza",
+    "telefone": "(11) 3333-4444",
+    "celular": "(11) 98888-7777",
+    "email": "alpha@email.com",
+    "inscricaoEstadual": "123.456.789.000",
+    "cpf": "123.456.789-00",
+    "cep": "01000-000",
+    "estado": "SP",
+    "cidade": "São Paulo",
+    "bairro": "Centro",
+    "endereco": "Rua A",
+    "numero": "100",
+    "complemento": "Sala 1",
+    "observacoes": "Fornecedor de informática"
+  },
+  {
+    "id": 2,
+    "cnpj": "66.666.666/6666-66",
+    "razaoSocial": "teste",
+    "nomeFantasia": "teste",
+    "responsavel": "hudsib",
+    "telefone": "(66) 66666-6666",
+    "celular": "(66) 66666-6666",
+    "email": "hudsib@gmail.com",
+    "inscricaoEstadual": "58484843",
+    "cpf": "666.666.666-66",
+    "cep": "89230-400",
+    "estado": "SC",
+    "cidade": "Joinville",
+    "bairro": "Jarivatuba",
+    "endereco": "Rua Jarivatuba",
+    "numero": "",
+    "complemento": "",
+    "observacoes": ""
+  }
+]

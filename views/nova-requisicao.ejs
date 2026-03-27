@@ -1,0 +1,213 @@
+<%- include('partials/header', { titulo: 'Pedido de Compra' }) %>
+
+<main class="req-erp-page">
+  <div class="req-erp-card">
+    <div class="req-window-title">Pedido de Compra</div>
+
+    <form action="/requisicoes/nova" method="POST">
+      <section class="req-box">
+        <div class="req-box-title">Pedido de Compra</div>
+
+        <div class="req-top-grid">
+          <div class="req-field small">
+            <label>Pedido:</label>
+            <input type="text" value="0" name="pedido">
+          </div>
+
+          <div class="req-field small">
+            <label>Data do Pedido:</label>
+            <input type="text" value="15/04/2020" name="dataPedido">
+          </div>
+        </div>
+
+        <div class="req-main-grid">
+          <div class="req-field">
+            <label>Fornecedor</label>
+            <input type="text" name="fornecedor" placeholder="Fornecedor">
+          </div>
+
+          <div class="req-field small">
+            <label>CPF/CNPJ:</label>
+            <input type="text" name="cpfCnpj">
+          </div>
+
+          <div class="req-field small">
+            <label>Tipo de Pedido:</label>
+            <select name="tipoPedido">
+              <option>Selecione</option>
+              <option>Compra</option>
+              <option>Serviço</option>
+            </select>
+          </div>
+
+          <div class="req-field small">
+            <label>Data Previsão Entrega Pedido:</label>
+            <input type="text" name="previsaoEntrega" value="0">
+          </div>
+
+          <div class="req-field small">
+            <label>% Desconto Pedido:</label>
+            <input type="text" name="descontoPedido" value="0">
+          </div>
+        </div>
+      </section>
+
+      <section class="req-box">
+        <div class="req-box-title">Itens</div>
+
+        <div class="req-item-grid">
+          <div class="req-field">
+            <label>Código Produto:</label>
+            <input type="text" name="codigoProduto">
+          </div>
+
+          <div class="req-field req-span-2">
+            <label>Descrição Produto:</label>
+            <input type="text" name="descricaoProduto">
+          </div>
+
+          <div class="req-field tiny">
+            <label>UN:</label>
+            <input type="text" name="unidade">
+          </div>
+
+          <div class="req-field tiny">
+            <label>Qtd:</label>
+            <input type="text" name="quantidade">
+          </div>
+
+          <div class="req-field small">
+            <label>Valor Unitário:</label>
+            <input type="text" name="valorUnitario" value="0,0000">
+          </div>
+
+          <div class="req-field tiny">
+            <label>% IPI:</label>
+            <input type="text" name="ipi" value="0">
+          </div>
+
+          <div class="req-field small">
+            <label>% Desconto Item:</label>
+            <input type="text" name="descontoItem" value="0,0000">
+          </div>
+
+          <div class="req-field small">
+            <label>Valor Total:</label>
+            <input type="text" name="valorTotal" value="0,0000">
+          </div>
+
+          <div class="req-field small">
+            <label>Data Previsão Entrega Item:</label>
+            <input type="text" name="previsaoItem">
+          </div>
+        </div>
+
+        <div class="req-actions-line">
+          <div class="req-field req-observacao">
+            <label>Observação Item:</label>
+            <input type="text" name="observacaoItem">
+          </div>
+
+          <div class="req-inline-buttons">
+            <button type="button" class="req-mini-btn">＋ Adicionar</button>
+            <button type="button" class="req-mini-btn light">🧹 Limpar</button>
+            <button type="button" class="req-mini-btn light">📥 Importar</button>
+          </div>
+        </div>
+
+        <div class="req-table-wrapper">
+          <table class="req-table">
+            <thead>
+              <tr>
+                <th>Nº Item</th>
+                <th>Cód. Produto</th>
+                <th>Desc. Produto</th>
+                <th>UN</th>
+                <th>Qtd</th>
+                <th>Vl. Unitário</th>
+                <th>% Desconto</th>
+                <th>Valor Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% itens.forEach(function(item) { %>
+                <tr>
+                  <td><%= item.item %></td>
+                  <td><%= item.codigo %></td>
+                  <td><%= item.descricao %></td>
+                  <td><%= item.un %></td>
+                  <td><%= item.qtd %></td>
+                  <td>R$ <%= item.valorUnitario %></td>
+                  <td><%= item.desconto %></td>
+                  <td>R$ <%= item.valorTotal %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="req-total-line">
+          <span>Valor Total:</span>
+          <strong>R$ 75.096,81</strong>
+        </div>
+      </section>
+
+      <section class="req-box">
+        <div class="req-tabs">
+          <span class="active">Dados Gerais</span>
+          <span>Financeiro</span>
+          <span>Aprovador Adicional</span>
+        </div>
+
+        <div class="req-bottom-grid">
+          <div class="req-field">
+            <label>Transportadora:</label>
+            <input type="text" name="transportadora">
+          </div>
+
+          <div class="req-field">
+            <label>Prazo Entrega:</label>
+            <input type="text" name="prazoEntrega">
+          </div>
+
+          <div class="req-field">
+            <label>Responsável:</label>
+            <input type="text" name="responsavel" value="CHARLENE MICHELS">
+          </div>
+
+          <div class="req-field req-span-2">
+            <label>Observação:</label>
+            <textarea name="observacao" rows="3"></textarea>
+          </div>
+
+          <div class="req-field req-span-2">
+            <label>Observação Interna:</label>
+            <textarea name="observacaoInterna" rows="3"></textarea>
+          </div>
+
+          <div class="req-field">
+            <label>Solicitante:</label>
+            <input type="text" name="solicitante" value="CHARLENE MICHELS">
+          </div>
+
+          <div class="req-field">
+            <label>Valor do Frete:</label>
+            <input type="text" name="valorFrete" value="R$ 0,00">
+          </div>
+
+          <div class="req-radio-group">
+            <label><input type="radio" name="fretePor" checked> Comprador</label>
+            <label><input type="radio" name="fretePor"> Fornecedor</label>
+          </div>
+        </div>
+      </section>
+
+      <div class="req-footer-buttons">
+        <button type="button" class="req-bottom-btn cancel">⛔ Cancelar</button>
+        <button type="submit" class="req-bottom-btn save">✔ Salvar</button>
+        <button type="button" class="req-bottom-btn send">📨 Enviar</button>
+        <a href="/requisicoes" class="req-bottom-btn exit">🚪 Sair</a>
+      </div>
+    </form>
+  </div>
+</main>

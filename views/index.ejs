@@ -49,7 +49,7 @@
         <h2>Valor Total em Compras</h2>
       </div>
       <div class="money-value">
-        R$ <%= dashboard.valorTotalCompras.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+        R$ <%= Number(dashboard.valorTotalCompras || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
       </div>
       <p class="panel-text">Valor consolidado de compras emitidas, recebidas e em andamento.</p>
     </div>
@@ -60,15 +60,19 @@
       </div>
 
       <div class="mini-chart">
-  <% comprasPorMes.forEach(function(item) { %>
-    <div class="chart-col">
-      <div class="chart-bar-wrap">
-        <div class="chart-bar <%= item.classe %>"></div>
+        <% if (comprasPorMes && comprasPorMes.length > 0) { %>
+          <% comprasPorMes.forEach(function(item) { %>
+            <div class="chart-col">
+              <div class="chart-bar-wrap">
+                <div class="chart-bar <%= item.classe %>"></div>
+              </div>
+              <span class="chart-label"><%= item.mes %></span>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="panel-text">Sem dados de compras por mês no momento.</p>
+        <% } %>
       </div>
-      <span class="chart-label"><%= item.mes %></span>
-    </div>
-  <% }) %>
-</div>
     </div>
   </section>
 
@@ -79,23 +83,27 @@
       </div>
 
       <div class="simple-list">
-        <% ultimasRequisicoes.forEach(function(req) { %>
-          <div class="simple-list-item">
-            <div>
-              <strong>#<%= req.id %></strong>
-              <span><%= req.solicitante %> • <%= req.setor %></span>
+        <% if (ultimasRequisicoes && ultimasRequisicoes.length > 0) { %>
+          <% ultimasRequisicoes.forEach(function(req) { %>
+            <div class="simple-list-item">
+              <div>
+                <strong>#<%= req.id %></strong>
+                <span><%= req.solicitante %> • <%= req.setor %></span>
+              </div>
+              <div>
+                <% if (req.status === 'ABERTA') { %>
+                  <span class="status-badge status-aberta"><%= req.status %></span>
+                <% } else if (req.status === 'APROVADA') { %>
+                  <span class="status-badge status-aprovada"><%= req.status %></span>
+                <% } else { %>
+                  <span class="status-badge status-atendida"><%= req.status %></span>
+                <% } %>
+              </div>
             </div>
-            <div>
-              <% if (req.status === 'ABERTA') { %>
-                <span class="status-badge status-pendente"><%= req.status %></span>
-              <% } else if (req.status === 'APROVADA') { %>
-                <span class="status-badge status-liberada"><%= req.status %></span>
-              <% } else { %>
-                <span class="status-badge status-recebida"><%= req.status %></span>
-              <% } %>
-            </div>
-          </div>
-        <% }) %>
+          <% }) %>
+        <% } else { %>
+          <p class="panel-text">Nenhuma requisição encontrada.</p>
+        <% } %>
       </div>
     </div>
 
@@ -105,15 +113,19 @@
       </div>
 
       <div class="simple-list">
-        <% fornecedoresMaisUsados.forEach(function(f) { %>
-          <div class="simple-list-item fornecedor-item">
-            <div>
-              <strong><%= f.nome %></strong>
-              <span><%= f.pedidos %> pedidos</span>
+        <% if (fornecedoresMaisUsados && fornecedoresMaisUsados.length > 0) { %>
+          <% fornecedoresMaisUsados.forEach(function(f) { %>
+            <div class="simple-list-item fornecedor-item">
+              <div>
+                <strong><%= f.nome %></strong>
+                <span><%= f.pedidos %> pedidos</span>
+              </div>
+              <div class="fornecedor-badge"><%= f.pedidos %></div>
             </div>
-            <div class="fornecedor-badge"><%= f.pedidos %></div>
-          </div>
-        <% }) %>
+          <% }) %>
+        <% } else { %>
+          <p class="panel-text">Nenhum fornecedor encontrado.</p>
+        <% } %>
       </div>
     </div>
   </section>
@@ -136,23 +148,29 @@
           </tr>
         </thead>
         <tbody>
-          <% ultimasOrdens.forEach(function(ordem) { %>
+          <% if (ultimasOrdens && ultimasOrdens.length > 0) { %>
+            <% ultimasOrdens.forEach(function(ordem) { %>
+              <tr>
+                <td>#<%= ordem.id %></td>
+                <td><%= ordem.fornecedor %></td>
+                <td><%= ordem.data %></td>
+                <td>R$ <%= Number(ordem.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                <td>
+                  <% if (ordem.status === 'PENDENTE' || ordem.status === 'ABERTA') { %>
+                    <span class="status-badge status-aberta"><%= ordem.status %></span>
+                  <% } else if (ordem.status === 'LIBERADA' || ordem.status === 'APROVADA') { %>
+                    <span class="status-badge status-aprovada"><%= ordem.status %></span>
+                  <% } else { %>
+                    <span class="status-badge status-atendida"><%= ordem.status %></span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
             <tr>
-              <td>#<%= ordem.id %></td>
-              <td><%= ordem.fornecedor %></td>
-              <td><%= ordem.data %></td>
-              <td>R$ <%= ordem.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
-              <td>
-                <% if (ordem.status === 'PENDENTE') { %>
-                  <span class="status-badge status-pendente"><%= ordem.status %></span>
-                <% } else if (ordem.status === 'LIBERADA') { %>
-                  <span class="status-badge status-liberada"><%= ordem.status %></span>
-                <% } else { %>
-                  <span class="status-badge status-recebida"><%= ordem.status %></span>
-                <% } %>
-              </td>
+              <td colspan="5">Nenhuma ordem de compra encontrada.</td>
             </tr>
-          <% }) %>
+          <% } %>
         </tbody>
       </table>
     </div>

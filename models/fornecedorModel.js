@@ -75,10 +75,22 @@ async function excluirFornecedor(id) {
   }
 }
 
+async function contarFornecedores() {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const rows = await conn.query('SELECT COUNT(*) AS total FROM fornecedores');
+    return Number(rows[0].total);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
 module.exports = {
   listarFornecedores,
   buscarFornecedorPorId,
   criarFornecedor,
   atualizarFornecedor,
-  excluirFornecedor
+  excluirFornecedor,
+  contarFornecedores
 };

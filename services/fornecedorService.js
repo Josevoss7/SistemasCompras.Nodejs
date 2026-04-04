@@ -33,3 +33,7 @@ exports.remover = async (id) => {
   await fornecedorModel.excluirFornecedor(id);
   return true;
 };
+
+exports.contar = async () => {
+  return await fornecedorModel.contarFornecedores();
+};

@@ -1,9 +1,9 @@
-<%- include('partials/header', { titulo: 'Nova Requisição' }) %>
+<%- include('partials/header', { titulo: 'Editar Requisição' }) %>
 <%- include('partials/navbar') %>
 
 <main class="container">
   <div class="page-header">
-    <h1>Nova Requisição</h1>
+    <h1>Editar Requisição</h1>
     <a href="/requisicoes" class="btn-secondary">Voltar</a>
   </div>
 
@@ -14,7 +14,7 @@
       </div>
     <% } %>
 
-    <form action="/requisicoes/nova" method="POST" class="form-grid">
+    <form action="/requisicoes/editar/<%= dados.id %>" method="POST" class="form-grid">
       <div class="form-group">
         <label for="solicitante">Solicitante</label>
         <input
@@ -83,7 +83,7 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn-primary">Salvar Requisição</button>
+        <button type="submit" class="btn-primary">Salvar Alterações</button>
       </div>
     </form>
   </div>

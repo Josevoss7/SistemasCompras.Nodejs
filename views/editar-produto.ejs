@@ -15,6 +15,7 @@
     <% } %>
 
     <form action="/produtos/editar/<%= dados.id %>" method="POST" class="form-grid">
+
       <div class="form-group">
         <label for="nome">Nome do produto</label>
         <input
@@ -60,9 +61,28 @@
         >
       </div>
 
+      <!-- NOVO CAMPO: FORNECEDOR -->
+      <div class="form-group">
+        <label for="fornecedor_id">Fornecedor</label>
+        <select id="fornecedor_id" name="fornecedor_id">
+          <option value="">Selecione um fornecedor</option>
+
+          <% fornecedores.forEach(fornecedor => { %>
+            <option
+              value="<%= fornecedor.id %>"
+              <%= fornecedor.id == dados.fornecedor_id ? 'selected' : '' %>
+            >
+              <%= fornecedor.nomeFantasia || fornecedor.razaoSocial || fornecedor.nome %>
+            </option>
+          <% }) %>
+
+        </select>
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn-primary">Salvar Alterações</button>
       </div>
+
     </form>
   </div>
 </main>

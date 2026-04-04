@@ -1,47 +1,138 @@
-exports.listar = (req, res) => {
-  const requisicoes = [
-    { id: 1, solicitante: 'Carlos Silva', setor: 'TI', status: 'ABERTA' },
-    { id: 2, solicitante: 'Mariana Souza', setor: 'Compras', status: 'APROVADA' },
-    { id: 3, solicitante: 'João Pedro', setor: 'Financeiro', status: 'ATENDIDA' }
-  ];
+const requisicaoService = require('../services/requisicaoService');
+const produtoService = require('../services/produtoService');
 
-  res.render('requisicoes', {
-    requisicoes,
-    mensagem: req.query.mensagem || null
-  });
+exports.listar = async (req, res) => {
+  try {
+    const requisicoes = await requisicaoService.listarTodos();
+
+    res.render('requisicoes', {
+      requisicoes,
+      mensagem: req.query.mensagem || null
+    });
+  } catch (erro) {
+    console.error('Erro ao listar requisições:', erro);
+    res.redirect('/requisicoes?mensagem=Erro ao listar requisições');
+  }
 };
 
-exports.formNova = (req, res) => {
-  const itens = [
-    {
-      item: 1,
-      codigo: '009',
-      descricao: 'TRANSFORMADOR ENTRADA 220/110V 2000 WATS',
-      un: 'UN',
-      qtd: 10,
-      valorUnitario: '95,81',
-      desconto: '0,00',
-      valorTotal: '958,10'
-    },
-    {
-      item: 2,
-      codigo: 'N314',
-      descricao: 'IMPRESSORA XEROX NÚVERA N314',
-      un: 'UN',
-      qtd: 1,
-      valorUnitario: '75.000,00',
-      desconto: '0,00',
-      valorTotal: '75.000,00'
+exports.formNova = async (req, res) => {
+  try {
+    const produtos = await produtoService.listarTodos();
+
+    res.render('nova-requisicao', {
+      itens: [],
+      dados: {},
+      erro: null,
+      produtos
+    });
+  } catch (erro) {
+    console.error('Erro ao abrir formulário de requisição:', erro);
+    res.render('nova-requisicao', {
+      itens: [],
+      dados: {},
+      erro: 'Erro ao carregar produtos.',
+      produtos: []
+    });
+  }
+};
+
+exports.criar = async (req, res) => {
+  try {
+    const { solicitante, setor, produto_id, quantidade } = req.body;
+    const produtos = await produtoService.listarTodos();
+
+    if (!solicitante || !setor || !produto_id || !quantidade) {
+      return res.render('nova-requisicao', {
+        itens: [],
+        dados: req.body,
+        erro: 'Preencha os campos obrigatórios.',
+        produtos
+      });
     }
-  ];
 
-  res.render('nova-requisicao', {
-    itens,
-    dados: {}
-  });
+    await requisicaoService.criar(req.body);
+
+    res.redirect('/requisicoes?mensagem=Requisição criada com sucesso');
+  } catch (erro) {
+    console.error('Erro ao criar requisição:', erro);
+    const produtos = await produtoService.listarTodos().catch(() => []);
+    res.render('nova-requisicao', {
+      itens: [],
+      dados: req.body,
+      erro: 'Erro ao criar requisição.',
+      produtos
+    });
+  }
 };
 
-exports.criar = (req, res) => {
-  console.log('Nova requisição recebida:', req.body);
-  res.redirect('/requisicoes?mensagem=Requisição criada com sucesso');
+exports.formEditar = async (req, res) => {
+  try {
+    const requisicao = await requisicaoService.buscarPorId(req.params.id);
+    const produtos = await produtoService.listarTodos();
+
+    if (!requisicao) {
+      return res.redirect('/requisicoes?mensagem=Requisição não encontrada');
+    }
+
+    res.render('editar-requisicao', {
+      dados: requisicao,
+      erro: null,
+      produtos
+    });
+  } catch (erro) {
+    console.error('Erro ao carregar requisição:', erro);
+    res.redirect('/requisicoes?mensagem=Erro ao carregar requisição');
+  }
+};
+
+exports.editar = async (req, res) => {
+  try {
+    const { solicitante, setor, produto_id, quantidade } = req.body;
+    const produtos = await produtoService.listarTodos();
+
+    if (!solicitante || !setor || !produto_id || !quantidade) {
+      return res.render('editar-requisicao', {
+        dados: {
+          id: req.params.id,
+          ...req.body
+        },
+        erro: 'Preencha os campos obrigatórios.',
+        produtos
+      });
+    }
+
+    const atualizado = await requisicaoService.atualizar(req.params.id, req.body);
+
+    if (!atualizado) {
+      return res.redirect('/requisicoes?mensagem=Requisição não encontrada');
+    }
+
+    res.redirect('/requisicoes?mensagem=Requisição atualizada com sucesso');
+  } catch (erro) {
+    console.error('Erro ao editar requisição:', erro);
+    const produtos = await produtoService.listarTodos().catch(() => []);
+    res.render('editar-requisicao', {
+      dados: {
+        id: req.params.id,
+        ...req.body
+      },
+      erro: 'Erro ao atualizar requisição.',
+      produtos
+    });
+  }
+};
+
+exports.excluir = async (req, res) => {
+  try {
+    const removido = await requisicaoService.remover(req.params.id);
+
+    if (!removido) {
+      return res.redirect('/requisicoes?mensagem=Requisição não encontrada');
+    }
+
+    res.redirect('/requisicoes?mensagem=Requisição excluída com sucesso');
+  } catch (erro) {
+    console.error('Erro ao excluir requisição:', erro);
+    res.redirect('/requisicoes?mensagem=Erro ao excluir requisição');
+  }
 };

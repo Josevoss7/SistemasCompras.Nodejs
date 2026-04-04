@@ -4,7 +4,20 @@ async function listarProdutos() {
   let conn;
   try {
     conn = await pool.getConnection();
-    const rows = await conn.query('SELECT * FROM produtos ORDER BY id DESC');
+    const rows = await conn.query(`
+      SELECT
+        p.id,
+        p.nome,
+        p.descricao,
+        p.categoria,
+        p.preco,
+        p.estoque,
+        p.fornecedor_id,
+        f.nome AS fornecedor_nome
+      FROM produtos p
+      LEFT JOIN fornecedores f ON p.fornecedor_id = f.id
+      ORDER BY p.id DESC
+    `);
     return rows;
   } finally {
     if (conn) conn.release();
@@ -15,7 +28,12 @@ async function buscarProdutoPorId(id) {
   let conn;
   try {
     conn = await pool.getConnection();
-    const rows = await conn.query('SELECT * FROM produtos WHERE id = ?', [id]);
+    const rows = await conn.query(
+      `SELECT id, nome, descricao, categoria, preco, estoque, fornecedor_id
+       FROM produtos
+       WHERE id = ?`,
+      [id]
+    );
     return rows[0] || null;
   } finally {
     if (conn) conn.release();
@@ -27,7 +45,7 @@ async function criarProduto(produto) {
   try {
     conn = await pool.getConnection();
     const result = await conn.query(
-      `INSERT INTO produtos (nome, descricao, categoria, preco, estoque, fornecedor)
+      `INSERT INTO produtos (nome, descricao, categoria, preco, estoque, fornecedor_id)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [
         produto.nome,
@@ -35,7 +53,7 @@ async function criarProduto(produto) {
         produto.categoria,
         produto.preco,
         produto.estoque,
-        produto.fornecedor || ''
+        produto.fornecedor_id || null
       ]
     );
     return result.insertId;
@@ -50,7 +68,7 @@ async function atualizarProduto(id, produto) {
     conn = await pool.getConnection();
     await conn.query(
       `UPDATE produtos
-       SET nome = ?, descricao = ?, categoria = ?, preco = ?, estoque = ?, fornecedor = ?
+       SET nome = ?, descricao = ?, categoria = ?, preco = ?, estoque = ?, fornecedor_id = ?
        WHERE id = ?`,
       [
         produto.nome,
@@ -58,7 +76,7 @@ async function atualizarProduto(id, produto) {
         produto.categoria,
         produto.preco,
         produto.estoque,
-        produto.fornecedor || '',
+        produto.fornecedor_id || null,
         id
       ]
     );
@@ -77,10 +95,22 @@ async function excluirProduto(id) {
   }
 }
 
+async function contarProdutos() {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const rows = await conn.query('SELECT COUNT(*) AS total FROM produtos');
+    return Number(rows[0].total);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
 module.exports = {
   listarProdutos,
   buscarProdutoPorId,
   criarProduto,
   atualizarProduto,
-  excluirProduto
+  excluirProduto,
+  contarProdutos
 };
